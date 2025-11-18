@@ -1,3 +1,6 @@
+const humanScore = 0;
+const computerScore = 0;
+
 function getComputerChoice () {
     /*
         CREATE variable n
@@ -11,32 +14,38 @@ function getComputerChoice () {
 
     let n = Math.floor(Math.random() * 3);
 
-    return  n == 1 ? "Rock" 
-          : n == 2 ? "Paper"
-          : "Scissors";
+    return  n == 1 ? "rock" 
+          : n == 2 ? "paper"
+          : "scissors";
 }
 
 function getHumanChoice () {
     /* 
-        CREATE variable input
-
-        PROMPT user with message: 
-            "Enter your choice, 1: Rock, 2: Paper, 3: Scissors"
+        INIT inputIsValid to false
+        INIT inputString 
         
-        STORE value from prompt in input
+        WHILE inputIsValid is false
+            IF inputString matches pattern 
+                Set inputIsValid to true
+            ELSE
+                Get user input and assign the value to inputString
+            ENDIF
+        ENDLOOP
 
-        CONVERT input to a number
-
-        IF input is equal to 1 then return rock
-        ELSEIF input is equal to 2 then return paper
-        ELSE return scissors
+        RETURN inputString converted to lowercase
     */
 
-    let promptMessage = `Enter your choice:\n 1 for "Rock", 2 for "Paper", and 3 for "Scissors".`;
-    let inputStr = prompt(promptMessage);
-    let inputInt = +inputStr;
+    let inputIsValid = false; 
+    let inputString = prompt("Enter your choice:");
+    let pattern = /\b(rock|paper|scissors)\b/i; // I used chatgpt for this
 
-    return inputInt == 1 ? "Rock" 
-         : inputInt == 2 ? "Paper"
-         : "Scissors";
+    while (inputIsValid == false) {
+        if (pattern.test(inputString)) {
+            inputIsValid = true;
+        } else {
+            inputString = prompt("Please try again:")
+        }
+    }
+
+    return inputString.toLowerCase();
 }
