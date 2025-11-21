@@ -1,52 +1,23 @@
-const values = {"rock": 1,"paper": 2,"scissors": 3};
-
-function getRandomKey(obj) {
-    const keys = Object.keys(obj);
-    const n = Math.floor(Math.random() * keys.length);
-
-    return keys[n];
-}
-
-function getComputerChoice() {
-    // SET variable n to a random number from 0 to 2
-    // SET variable keys to an array of the keys from the values object
-    // RETURN the key with the index of n
-
-    const n = Math.floor(Math.random() * 3);
-    const keys = Object.keys(values);
-
-    return keys[n];
-}
+function getComputerChoice(array) {
+    const randomIndex = Math.floor(Math.random() * array.length);
     
-function getHumanChoice() {
-    // INIT inputIsValid to false
-    // INIT inputString 
+    return array[randomIndex];
+}
 
-    // WHILE inputIsValid is false
-    // IF inputString matches pattern 
-    // Set inputIsValid to true
-    // ELSE
-    // Get user input and assign the value to inputString
-    // ENDIF
-    // ENDLOOP
+function getHumanChoice(pattern) {
+    let inputValid = false;
+    let inputString = prompt('Enter your choice: '); 
 
-    // RETURN inputString converted to lowercase
-
-    let inputIsValid = false;
-    let inputString = prompt("Enter your choice:");
-    let pattern = /\b(rock|paper|scissors)\b/i; // I used chatgpt for this
-
-    while (inputIsValid == false) {
-        if (pattern.test(inputString)) {
-            inputIsValid = true;
+    while (inputValid == false) {
+        if ( pattern.test(inputString) ) {
+            inputValid = true;
+            return inputString.toLowerCase();
         } else {
-            inputString = prompt("Please try again:")
+            inputString = prompt('Please try again: ')
         }
     }
 
-    return inputString.toLowerCase();
 }
-
 
 function playGame() {
     // SET variable maxRounds to 5
@@ -59,9 +30,17 @@ function playGame() {
     
     // SET variable isWinner to the output of running playRound
     // ENDLOOP 
+    
+    const weapons = ['rock', 'paper', 'scissors'];
+    const pattern = new RegExp(`\\b(${weapons.join('|')})\\b`, 'i');
+    const maxRounds = 5;
+    let roundsCounter = 0;
+    let humanScore = 0;
+    let computerScore = 0;
+    let isWinner = false;
+
 
     function playRound(humanChoice, computerChoice) {
-        
         // SET variable humanValue to the corresponding value from the values object
         // SET variable computerValue to the corresponding value from the values object
         // SET variable outcomeValue to humanValue - computerValue % 3
@@ -69,7 +48,7 @@ function playGame() {
         // IF the outcomValue is equal to 1
         //     increment humanScore by 1
         //     PRINT victory message string template
-        // ELSIF the outcomeValue is equal to 2 or - 1
+        // ELSIF the outcomeValue is equal to 2 or -1
         //     increment computerScore by 1
         //     PRINT defeat message string template
         // ELSE
@@ -77,8 +56,8 @@ function playGame() {
         
         // PRINT scoreboard string template
         
-        const humanValue = values[humanChoice];
-        const computerValue = values[computerChoice];
+        const humanValue = weapons.indexOf(humanChoice);
+        const computerValue = weapons.indexOf(computerChoice);
         const outcomeValue = humanValue - computerValue % 3;
         let isWinner = false;
         
@@ -99,14 +78,8 @@ function playGame() {
         return isWinner;
     }
     
-    const maxRounds = 5;
-    let roundsCounter = 0;
-    let humanScore = 0;
-    let computerScore = 0;
-    let isWinner = false;
-    
     while (roundsCounter < maxRounds) {
-        isWinner = playRound(getHumanChoice(), getComputerChoice());
+        isWinner = playRound(getHumanChoice(pattern), getComputerChoice(weapons));
 
         if (isWinner) {
             roundsCounter++;
