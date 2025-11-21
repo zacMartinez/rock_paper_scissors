@@ -1,6 +1,5 @@
 function getComputerChoice(array) {
-    const randomIndex = Math.floor(Math.random() * array.length);
-    
+    const randomIndex = Math.floor(Math.random() * array.length);    
     return array[randomIndex];
 }
 
@@ -16,46 +15,17 @@ function getHumanChoice(pattern) {
             inputString = prompt('Please try again: ')
         }
     }
-
 }
 
 function playGame() {
-    // SET variable maxRounds to 5
-    // SET variable roundsCounter to 0
-    // SET variable isWinner to false
-    
-    // WHILE roundsCounter is less than maxRounds
-    // IF isWinner
-    // increment roundsCounter by 1
-    
-    // SET variable isWinner to the output of running playRound
-    // ENDLOOP 
-    
     const weapons = ['rock', 'paper', 'scissors'];
     const pattern = new RegExp(`\\b(${weapons.join('|')})\\b`, 'i');
     const maxRounds = 5;
     let roundsCounter = 0;
     let humanScore = 0;
     let computerScore = 0;
-    let isWinner = false;
-
-
-    function playRound(humanChoice, computerChoice) {
-        // SET variable humanValue to the corresponding value from the values object
-        // SET variable computerValue to the corresponding value from the values object
-        // SET variable outcomeValue to humanValue - computerValue % 3
-        
-        // IF the outcomValue is equal to 1
-        //     increment humanScore by 1
-        //     PRINT victory message string template
-        // ELSIF the outcomeValue is equal to 2 or -1
-        //     increment computerScore by 1
-        //     PRINT defeat message string template
-        // ELSE
-        //     PRINT tie message string template
-        
-        // PRINT scoreboard string template
-        
+    
+    function playRound(humanChoice, computerChoice) {        
         const humanValue = weapons.indexOf(humanChoice);
         const computerValue = weapons.indexOf(computerChoice);
         const outcomeValue = humanValue - computerValue % 3;
@@ -78,11 +48,17 @@ function playGame() {
         return isWinner;
     }
     
+    let isWinner = false;
     while (roundsCounter < maxRounds) {
         isWinner = playRound(getHumanChoice(pattern), getComputerChoice(weapons));
-
+        
+        let leadingScore = Math.max(humanScore, computerScore);
         if (isWinner) {
             roundsCounter++;
+
+            if (leadingScore / maxRounds > 0.5) { // End game early if lead cannot be recovered
+                break;
+            }
         }
     }
     
