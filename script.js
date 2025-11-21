@@ -45,7 +45,7 @@ function playGame() {
         }
         
         console.log(`The score is, You: ${humanScore}, Computer: ${computerScore}`);
-        return isWinner;
+        return isWinner; // This flag gets used to increment the rounds counter
     }
     
     let isWinner = false;
