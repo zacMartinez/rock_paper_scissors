@@ -75,16 +75,27 @@ function playRound(humanChoice, computerChoice) {
     const humanValue = values[humanChoice];
     const computerValue = values[computerChoice];
     const outcomeValue = humanValue - computerValue % 3;
+    let isWinner = false;
 
-    if (outcomeValue == 1) {
+    if ( outcomeValue == 1 ) {
         humanScore++;
+        isWinner = true;
         console.log(`You won! ${humanChoice} beats ${computerChoice}.`);
-    } else if (outcomeValue == 2 || -1) {
+    } else if ( outcomeValue == 2 || outcomeValue == -1 ) {
         computerScore++;
-        console.log(`You lost. ${computerChoice} beats ${humanChoice}.`)
+        isWinner = true;
+        console.log(`You lost. ${computerChoice} beats ${humanChoice}.`);
     } else {
+        isWinner = false;
         console.log(`It's a tie. Let's try again!`);
     }
 
     console.log(`The score is, You: ${humanScore}, Computer: ${computerScore}`);
+    return isWinner;
+}
+
+function playGame() {
+    /*
+
+    */
 }
