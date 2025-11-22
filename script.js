@@ -18,7 +18,8 @@ function getHumanChoice(pattern) {
 }
 
 function playGame() {
-    const weapons = ['rock', 'paper', 'scissors'];
+    const weapons = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
+    const weaponCount = weapons.length;
     const pattern = new RegExp(`\\b(${weapons.join('|')})\\b`, 'i');
     const maxRounds = 5;
     let roundsCounter = 0;
@@ -28,21 +29,21 @@ function playGame() {
     function playRound(humanChoice, computerChoice) {        
         const humanValue = weapons.indexOf(humanChoice);
         const computerValue = weapons.indexOf(computerChoice);
-        const outcomeValue = humanValue - computerValue % 3;
-        let isWinner = false;
+        const outcomeValue = Math.abs(humanValue - computerValue);
         
-        if (outcomeValue == 1) {
+        let isWinner = false;
+        if (outcomeValue % weaponCount == 0) {
+            isWinner = false;
+            console.log(`It's a tie. Let's try again!`);
+        } else if ((outcomeValue % weaponCount) % 2 === 0) {
             humanScore++;
             isWinner = true;
             console.log(`You won! ${humanChoice} beats ${computerChoice}.`);
-        } else if (outcomeValue == 2 || outcomeValue == -1) {
+        } else {
             computerScore++;
             isWinner = true;
             console.log(`You lost. ${computerChoice} beats ${humanChoice}.`);
-        } else {
-            isWinner = false;
-            console.log(`It's a tie. Let's try again!`);
-        }
+        }   
         
         console.log(`The score is, You: ${humanScore}, Computer: ${computerScore}`);
         return isWinner; // This flag gets used to increment the rounds counter
