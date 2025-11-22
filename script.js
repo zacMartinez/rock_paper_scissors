@@ -67,4 +67,4 @@ function playGame(weapons, maxRounds) {
     }
 }
 
-playGame(['rock', 'paper', 'scissors'], 5);
+console.log("To start the game run this in the console:\n playGame(['rock', 'paper', 'scissors'], 5);");
