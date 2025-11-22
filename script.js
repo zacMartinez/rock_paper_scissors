@@ -1,14 +1,14 @@
 function getComputerChoice(array) {
-    const randomIndex = Math.floor(Math.random() * array.length);    
+    const randomIndex = Math.floor(Math.random() * array.length);
     return array[randomIndex];
 }
 
 function getHumanChoice(pattern) {
     let inputValid = false;
-    let inputString = prompt('Enter your choice: '); 
-
+    let inputString = prompt('Enter your choice: ');
+    
     while (inputValid == false) {
-        if ( pattern.test(inputString) ) {
+        if (pattern.test(inputString)) {
             inputValid = true;
             return inputString.toLowerCase();
         } else {
@@ -17,46 +17,43 @@ function getHumanChoice(pattern) {
     }
 }
 
-function playGame() {
-    const weapons = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
+function playGame(weapons, maxRounds) {
     const weaponCount = weapons.length;
-    const pattern = new RegExp(`\\b(${weapons.join('|')})\\b`, 'i');
-    const maxRounds = 5;
+    const pattern = new RegExp(`\\b(${weapons.join('|')})\\b`, `i`);
     let roundsCounter = 0;
     let humanScore = 0;
     let computerScore = 0;
-    
-    function playRound(humanChoice, computerChoice) {        
-        const humanValue = weapons.indexOf(humanChoice);
-        const computerValue = weapons.indexOf(computerChoice);
-        const outcomeValue = Math.abs(humanValue - computerValue);
-        
+
+    function playRound(humanChoice, computerChoice) {
+        const humanChoiceInt = weapons.indexOf(humanChoice);
+        const computerChoiceInt = weapons.indexOf(computerChoice);
+        // console.log(humanChoiceInt, computerChoiceInt);
+
         let isWinner = false;
-        if (outcomeValue % weaponCount == 0) {
-            isWinner = false;
-            console.log(`It's a tie. Let's try again!`);
-        } else if ((outcomeValue % weaponCount) % 2 === 0) {
-            humanScore++;
-            isWinner = true;
-            console.log(`You won! ${humanChoice} beats ${computerChoice}.`);
-        } else {
+        if ( humanChoiceInt === computerChoiceInt ) {
+            console.log(`It's a tie! You both chose ${humanChoice}.`);
+        } else if ( (humanChoiceInt + 1) % weaponCount === computerChoiceInt ) {
             computerScore++;
             isWinner = true;
-            console.log(`You lost. ${computerChoice} beats ${humanChoice}.`);
-        }   
-        
-        console.log(`The score is, You: ${humanScore}, Computer: ${computerScore}`);
-        return isWinner; // This flag gets used to increment the rounds counter
+            console.log(`You lose! ${computerChoice} beats ${humanChoice}.`)
+        } else {
+            humanScore++;
+            isWinner = true;
+            console.log(`You win! ${humanChoice} beats ${computerChoice}.`);
+        }
+
+        console.log(`The score is; You: ${humanScore}, Computer: ${computerScore}`);
+        return isWinner;
     }
-    
+
     let isWinner = false;
     while (roundsCounter < maxRounds) {
-        isWinner = playRound(getHumanChoice(pattern), getComputerChoice(weapons));
+        isWinner = playRound( getHumanChoice(pattern), getComputerChoice(weapons) );
         
         let leadingScore = Math.max(humanScore, computerScore);
         if (isWinner) {
             roundsCounter++;
-
+            
             if (leadingScore / maxRounds > 0.5) { // End game early if lead cannot be recovered
                 break;
             }
@@ -69,3 +66,5 @@ function playGame() {
         console.log(`Sorry, you lost the game.`);
     }
 }
+
+playGame(['rock', 'paper', 'scissors'], 5);
