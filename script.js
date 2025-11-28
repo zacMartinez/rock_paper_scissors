@@ -1,70 +1,67 @@
-function getComputerChoice(array) {
-    const randomIndex = Math.floor(Math.random() * array.length);
-    return array[randomIndex];
+const buttons = document.querySelector('#buttons');
+
+function randomIndexOf(array) {
+    return Math.floor(Math.random() * array.length);
 }
 
-function getHumanChoice(pattern) {
-    let inputValid = false;
-    let inputString = prompt('Enter your choice: ');
-    
-    while (inputValid == false) {
-        if (pattern.test(inputString)) {
-            inputValid = true;
-            return inputString.toLowerCase();
-        } else {
-            inputString = prompt('Please try again: ')
-        }
+function playGame(maxRounds) {
+    const game = {
+        roundsCounter: 0,
+        humanScore: 0,
+        computerScore: 0,
+        isWinner: false,
+        update: updateGame,
     }
-}
+    const weapons = ['rock', 'paper', 'scissors'];
+    
+    function updateGame() {
+        console.table(game);
+    }
 
-function playGame(weapons, maxRounds) {
-    const weaponCount = weapons.length;
-    const pattern = new RegExp(`\\b(${weapons.join('|')})\\b`, `i`);
-    let roundsCounter = 0;
-    let humanScore = 0;
-    let computerScore = 0;
+    function logMessage(msg) {
+        const messageLog = document.querySelector('#message_log'); 
+        const newLog = document.createElement('p');
+
+        newLog.innerText = msg;
+        messageLog.appendChild(newLog);
+    }
+
+    function updateScoreboard() {
+        const scoreboard = document.querySelector('#scoreboard');
+        scoreboard.innerText = `You: ${game.humanScore}, Computer:${game.computerScore}`;
+    }
+    
+    function getComputerChoice() {
+        return weapons[randomIndexOf(weapons)];
+    }
 
     function playRound(humanChoice, computerChoice) {
         const humanChoiceInt = weapons.indexOf(humanChoice);
         const computerChoiceInt = weapons.indexOf(computerChoice);
-        // console.log(humanChoiceInt, computerChoiceInt);
 
-        let isWinner = false;
-        if ( humanChoiceInt === computerChoiceInt ) {
-            console.log(`It's a tie! You both chose ${humanChoice}.`);
-        } else if ( (humanChoiceInt + 1) % weaponCount === computerChoiceInt ) {
-            computerScore++;
-            isWinner = true;
-            console.log(`You lose! ${computerChoice} beats ${humanChoice}.`)
-        } else {
-            humanScore++;
-            isWinner = true;
-            console.log(`You win! ${humanChoice} beats ${computerChoice}.`);
-        }
-
-        console.log(`The score is; You: ${humanScore}, Computer: ${computerScore}`);
-        return isWinner;
-    }
-
-    let isWinner = false;
-    while (roundsCounter < maxRounds) {
-        isWinner = playRound( getHumanChoice(pattern), getComputerChoice(weapons) );
-        
-        let leadingScore = Math.max(humanScore, computerScore);
-        if (isWinner) {
-            roundsCounter++;
-            
-            if (leadingScore / maxRounds > 0.5) { // End game early if lead cannot be recovered
-                break;
+        if (humanChoice != computerChoice) {
+            if ( (humanChoiceInt + 1) % weapons.length === computerChoiceInt ) {
+                game.computerScore++;
+                logMessage(`You lost! ${computerChoice} beats ${humanChoice}`);
+            } else {
+                game.humanScore++;
+                logMessage(`You won! ${humanChoice} beats ${computerChoice}`);
             }
+            game.roundsCounter++;
+            updateScoreboard();
+        } else {
+            logMessage(`It's a tie! You both chose ${humanChoice}`);
         }
     }
-    
-    if (humanScore > computerScore) {
-        console.log(`Yay! You won the game!`);
-    } else {
-        console.log(`Sorry, you lost the game.`);
-    }
+
+    buttons.addEventListener('click', (e) => {
+        if (weapons.includes(e.target.id)) {
+            let humanChoice = e.target.id;
+            let computerChoice = getComputerChoice();
+            playRound(humanChoice, computerChoice);
+        }
+    }); 
 }
 
-console.log("To start the game run this in the console:\n playGame(['rock', 'paper', 'scissors'], 5);");
+playGame(5);
+
