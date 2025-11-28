@@ -19,7 +19,7 @@ function playGame(maxRounds) {
         }    
         else {
             const maxScore = Math.max(game.humanScore, game.computerScore);
-            if ( maxScore / maxRounds >= 0.5 ) {
+            if ( maxScore / maxRounds > 0.5 ) {
                 game.isOver = true;
             }
         }
@@ -35,7 +35,7 @@ function playGame(maxRounds) {
 
     function updateScoreboard() {
         const scoreboard = document.querySelector('#scoreboard');
-        scoreboard.innerText = `You: ${game.humanScore} Computer:${game.computerScore}`;
+        scoreboard.innerText = `You: ${game.humanScore} Computer: ${game.computerScore}`;
     }
     
     function getComputerChoice() {

@@ -1,3 +1,35 @@
 body {
  background: #eeeeff;
 }
+
+h1 {
+    text-align: center;
+}
+
+div.content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+div#buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    flex: auto;
+    font-size: 24px;
+    padding: 8px 16px;
+}
+
+p {
+    font-family: monospace;
+}
+
+#message_log > p {
+    font-size: 16px;
+}
+
+p#scoreboard {
+    font-size: 24px;
+}
