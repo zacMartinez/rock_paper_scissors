@@ -4,6 +4,7 @@ body {
 
 h1 {
     text-align: center;
+    font-size: 40px;
 }
 
 div.content {
@@ -14,6 +15,7 @@ div.content {
 div#buttons {
     display: flex;
     justify-content: space-between;
+    gap: 8px;
 }
 
 button {
